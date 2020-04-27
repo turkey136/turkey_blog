@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>WSL + Docker + App でサーバを立ててホストマシンから繋げる | turkey_blog</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="WSL + Docker + App でサーバを立ててホストマシンから繋げる" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:4000/blog_md/20200425.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/blog_md/20200425.html" />
+<meta property="og:site_name" content="turkey_blog" />
+<script type="application/ld+json">
+{"url":"http://0.0.0.0:4000/blog_md/20200425.html","headline":"WSL + Docker + App でサーバを立ててホストマシンから繋げる","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=4ac8d884f36d062955024ac51a79a36ecbdfd099">
+    <script src="/assets/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header  class="without-description" >
+        <h1>turkey_blog</h1>
+        
+      </header>
+      <section>
+
+      <h2 id="wsl--docker--app-でサーバを立ててホストマシンから繋げる">WSL + Docker + App でサーバを立ててホストマシンから繋げる</h2>
+
+<h3 id="目標">目標</h3>
+<ol>
+  <li>Docker 上で Jekyll を起動させる</li>
+  <li>ホストのブラウザから Jekyll に接続する</li>
+</ol>
+
+<p><a href="/blog_md/20200424.html">WSL で Docker を動かす</a>の続きになります</p>
+
+<h3 id="とりあえずコンテナに入って状況確認する">とりあえずコンテナに入って状況確認する</h3>
+<ol>
+  <li>とりあえず最低限でコンテナを動かす
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> git clone clone git@github.com:shifumin/ jekyll-docker
+ cd jekyll-docker
+ docker-compose up
+
+ # =&gt; app_1 |  Auto-regeneration: enabled for '/srv/jekyll'
+ # =&gt; app_1 |     Server address: http://0.0.0.0:4000
+ # =&gt; app_1 |   Server running... press ctrl-c to stop.
+</code></pre></div>    </div>
+    <ul>
+      <li>docker version でエラーが出たらエラーメッセージに沿ってバージョンを変更</li>
+    </ul>
+  </li>
+  <li>ブラウザで確認
+  　- localhost:4000</li>
+</ol>
+
+<h3 id="参考">参考</h3>
+<p>[1] JekyllをDokcer上で動かしてGitHub Pagesのローカル環境での確認を楽する https://qiita.com/shifumin/items/8d5d26dfa18d4b62d873</p>
+
+
+      </section>
+    </div>
+    <footer>
+    
+      <p><a href="https://github.com/turkey136/turkey_blog"><strong>GitHub Project</strong></a> maintained by <a href="https://github.com/turkey136">turkey136</a></p>
+    
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    
+  </body>
+</html>
+ 

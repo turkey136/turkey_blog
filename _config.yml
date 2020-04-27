@@ -1,0 +1,7 @@
+markdown: kramdown
+theme: jekyll-theme-modernist
+title: Your awesome title
+google_analytics:
+author:
+  name: turkey136
+  email: isamu.takimoto.136@gmail.com

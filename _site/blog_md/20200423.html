@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>WSL で Ubuntu GUI 環境構築 | turkey_blog</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="WSL で Ubuntu GUI 環境構築" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:4000/blog_md/20200423.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/blog_md/20200423.html" />
+<meta property="og:site_name" content="turkey_blog" />
+<script type="application/ld+json">
+{"url":"http://0.0.0.0:4000/blog_md/20200423.html","headline":"WSL で Ubuntu GUI 環境構築","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=4ac8d884f36d062955024ac51a79a36ecbdfd099">
+    <script src="/assets/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header  class="without-description" >
+        <h1>turkey_blog</h1>
+        
+      </header>
+      <section>
+
+      <h2 id="wsl-で-ubuntu-gui-環境構築">WSL で Ubuntu GUI 環境構築</h2>
+
+<h3 id="目標">目標</h3>
+<ol>
+  <li>Windows Subsystem for Linux で Ubuntu インストール</li>
+  <li>GUI 環境でいじれる</li>
+  <li>日本語表示できる</li>
+  <li>日本語キーボードで入力できる</li>
+</ol>
+
+<p>特に 3,4 は超重要ですね。’ を打ちたいのに ＆ がしか打てないって致命的ですし。</p>
+
+<p>ひたすら悩みまくったり、Windows で書いて共有ファイルにおいて Ubuntu に持って行ってとか。思い出しただけでも( ；∀；)</p>
+
+<h3 id="環境">環境</h3>
+<ul>
+  <li>Windows10 Home Edition バージョン 1909</li>
+</ul>
+
+<h3 id="gui-ubuntu-をインストールする">GUI Ubuntu をインストールする</h3>
+<p>@MERIK  さんの記事[1]を参考にやっていきましょう</p>
+
+<ol>
+  <li>Windows Power shell で Windows Subsystem for Linux インストール
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+</code></pre></div>    </div>
+  </li>
+  <li><a href="https://sourceforge.net/projects/vcxsrv/">VcXsrv</a> を Windows にインストール
+    <ul>
+      <li>Windows 用 X サーバでこのアプリに Ubuntu の画面が表示されます</li>
+    </ul>
+  </li>
+  <li>Micrisoft Store から <a href="https://www.microsoft.com/ja-jp/p/ubuntu/9nblggh4msv6?rtc=1">Ubuntu</a> インストール
+    <ul>
+      <li>user や password 聞かれますが良しなに入力してください</li>
+      <li>システムをアップデート
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> sudo apt-get update
+ sudo apt-get upgrade
+</code></pre></div>        </div>
+      </li>
+      <li>Windows とファイル共有する場合は metadata を 追加して mount しなおす[2]
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo umount /mnt/c
+sudo mount -t drvfs C: /mnt/c -o metadata
+</code></pre></div>        </div>
+        <ul>
+          <li>共有フォルダ配下に git clone したい場合、上記で mount しなおさないと permitted エラーとなり、作業できません</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Ubuntu に xfce をインストール
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt-get install xfce4-terminal
+sudo apt-get install xfce4
+</code></pre></div>    </div>
+    <ul>
+      <li>GUI 用環境変数追加
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export DISPLAY=:0.0
+export LIBGL_ALWAYS_INDIRECT=1
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>GUI の起動
+    <ul>
+      <li>xlaunch の起動
+        <ul>
+          <li>One Window を選択し、Display number は0を選択します。真っ黒な画面が出たらOK</li>
+        </ul>
+      </li>
+      <li>xfce4 の起動
+        <ul>
+          <li>xlaunch が起動していることを確認
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>startxfce4
+</code></pre></div>            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>祝！ GUI 起動
+    <ul>
+      <li>xfce4 の起動コマンドは覚えられないので shell スクリプトで叩けるようにしたほうが良いです</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="日本語表示と日本語入力">日本語表示と日本語入力</h3>
+<p>’ を入力してみましょう ＆ になります( ；∀；)これを何とかしましょう</p>
+
+<p>以下の1,2をやった後に GUI で設定したら1,2いらないかも。。。
+というかこれやったほうが CUI からも使えるからこっちしか選択肢がない
+VS Code のターミナルからでも使えるぜ</p>
+
+<ul>
+  <li>アプリケーション &gt; 設定 &gt; キーボード で設定を開く</li>
+  <li>レイアウトタブで「システムデフォルトを使用する」を外す</li>
+  <li>キーボードモデルを「Generic 105-key PC(intl)」にする</li>
+</ul>
+
+<ol>
+  <li>日本語表示
+    <pre><code class="language-`">sudo apt install fcitx fcitx-mozc
+sudo apt install dbus-x11 x11-xserver-utils
+sudo sh -c "dbus-uuidgen &gt; /var/lib/dbus/machine-id"
+sudo apt install language-pack-ja
+sudo update-locale LANG=ja_JP.UTF8
+sudo apt install fonts-takao
+
+export GTK_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+export QT_IM_MODULE=fcitx
+export DefaultIMModule=fcitx
+xset -r 49
+fcitx-autostart
+</code></pre>
+  </li>
+  <li>日本語キーボードの設定
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fcitx-config-gtk3
+</code></pre></div>    </div>
+    <ul>
+      <li>キーボード選択画面で Mozc を選択</li>
+      <li>fcitx-autostart を xfce4 起動スクリプトに追加しておく</li>
+      <li>X 経由で GUI からじゃないと日本語キー配列使えないという罠が。。。</li>
+    </ul>
+  </li>
+</ol>
+
+<p>これで開発環境葉できました！お仕事できます</p>
+
+<h3 id="参考">参考</h3>
+<ul>
+  <li>[1] WSLでwindows上にLinuxのGUI環境を作る[メモ] https://qiita.com/MERIK/items/ef4ecf7a51f89c403e94</li>
+  <li>[2] PHP chmod(): Operation not permitted https://github.com/Microsoft/WSL/issues/3172</li>
+  <li>[3] WSL の Ubuntu18.04 で日本語入力 https://vogel.at.webry.info/201905/article_6.html</li>
+</ul>
+
+
+      </section>
+    </div>
+    <footer>
+    
+      <p><a href="https://github.com/turkey136/turkey_blog"><strong>GitHub Project</strong></a> maintained by <a href="https://github.com/turkey136">turkey136</a></p>
+    
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    
+  </body>
+</html>
+ 

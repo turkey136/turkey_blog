@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>WSL で Docker を動かす | turkey_blog</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="WSL で Docker を動かす" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="http://0.0.0.0:4000/blog_md/20200424.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/blog_md/20200424.html" />
+<meta property="og:site_name" content="turkey_blog" />
+<script type="application/ld+json">
+{"url":"http://0.0.0.0:4000/blog_md/20200424.html","headline":"WSL で Docker を動かす","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=4ac8d884f36d062955024ac51a79a36ecbdfd099">
+    <script src="/assets/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header  class="without-description" >
+        <h1>turkey_blog</h1>
+        
+      </header>
+      <section>
+
+      <h2 id="wsl-で-docker-を動かす">WSL で Docker を動かす</h2>
+
+<h3 id="目標">目標</h3>
+<ol>
+  <li>WSL 上で Docker Compose を動かす</li>
+</ol>
+
+<p><a href="/blog_md/20200423.html">WSL で Ubuntu GUI 環境構築</a>の続きになります</p>
+
+<h3 id="docker-ce-と-docker-compose-をインストールする">Docker CE と Docker Compose をインストールする</h3>
+<p>公式[1][2]を参考に進めていきましょう</p>
+
+<ol>
+  <li>インストール済の Docker を削除
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> sudo apt-get remove docker docker-engine docker.io containerd runc
+</code></pre></div>    </div>
+  </li>
+  <li>Docker のインストール
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> sudo apt-get install \
+ apt-transport-https \
+ ca-certificates \
+ curl \
+ gnupg-agent \
+ software-properties-common
+    
+ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+ sudo apt-key fingerprint 0EBFCD88
+ sudo add-apt-repository \
+ "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+ $(lsb_release -cs) \
+ stable"
+
+ sudo apt-get update
+WSLdo apt-get install docker-ce docker-ce-cli containerd.io
+</code></pre></div>    </div>
+  </li>
+  <li>Docker Compose のインストール
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> sudo -i
+ curl -L https://github.com/docker/compose/releases/download/1.6.2/docker-compose-`uname -s`-`uname -m` &gt; /usr/local/bin/docker-compose
+ chmod +x /usr/local/bin/docker-compose
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Docker を動かす</p>
+
+    <p>このままだと Docker が動かないので WSL2[3] を入れます。OS ビルドが 18917より古いと WSL2 は入らないので、事前に Windows のアップロード[4]が必要です</p>
+    <ul>
+      <li>「Windows の機能の有効化または無効化」で，「仮想マシンプラットフォーム」にチェックし， 「OK」をクリック</li>
+      <li>管理者として Windows PowerShell　で WSL2 を インストール
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+  dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+
+  wsl -l -v
+  wsl --set-version {上記で表示された NAME} 2
+  wsl -l -v
+</code></pre></div>        </div>
+      </li>
+      <li>「WSL 2 を実行するには、カーネル コンポーネントの更新が必要です。詳細については https://aka.ms/wsl2kernel を参照してください」と表示されたらリンク先に行ってソフトウェアをインストールし、再度コマンドを実行してください</li>
+      <li>WSL 上で Docker を起動します
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  sudo gpasswd -a $USER docker
+  sudo cgroupfs-mount &amp;&amp; service docker start
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>動作確認します
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run --rm hello-world
+
+ ♯=&gt; Hello from Docker!
+ #=&gt; This message shows that your installation appears to be working correctly.
+</code></pre></div>    </div>
+    <ul>
+      <li>ようやくここまで来ました。。。ここまで7時間かかりました。。。(´Д⊂ヽ)</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="docker-compose-が動くことを確認します">Docker Compose が動くことを確認します</h3>
+<ol>
+  <li>適当な Dockerfile を作ります
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> FROM ruby:2.7.0-alpine3.11
+ ENV LANG C.UTF-8
+</code></pre></div>    </div>
+  </li>
+  <li>適当な docker-compose.yml を作ります
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> version: '2'
+ services:
+   jekyll:
+     image: ruby:2.7.1-alpine3.10
+     container_name: jekyll
+     volumes:
+       - ./:/app
+     working_dir: /app
+</code></pre></div>    </div>
+  </li>
+  <li>docker-compose の動作確認します
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker-compose build
+ docker-compose up -d
+ docker images -a
+
+ # =&gt; REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+ # =&gt; ruby                2.7.1-alpine3.10    5f1a6f164d72        6 hours ago         50.8MB
+
+ docker-compose ps
+
+ # =&gt;  Name    Command   State    Ports
+ # =&gt; ---------------------------------
+ # =&gt; jekyll   irb       Exit 0
+</code></pre></div>    </div>
+    <ul>
+      <li>うぉー。動いた！</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="参考">参考</h3>
+<ul>
+  <li>[1] Install Docker Engine on Ubuntu https://docs.docker.com/engine/install/ubuntu/</li>
+  <li>[2] Docker Compose のインストール http://docs.docker.jp/compose/install.html</li>
+  <li>[3] WSL 2 のインストール，Ubuntu 18.04 のインストール https://www.kkaneko.jp/tools/wsl/wsl2.html</li>
+  <li>[4] Windows 10 Insider Program により，最新の Windows をプレビューのために取得する https://www.kkaneko.jp/tools/win/inside.html</li>
+</ul>
+
+
+      </section>
+    </div>
+    <footer>
+    
+      <p><a href="https://github.com/turkey136/turkey_blog"><strong>GitHub Project</strong></a> maintained by <a href="https://github.com/turkey136">turkey136</a></p>
+    
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    
+  </body>
+</html>
+ 
