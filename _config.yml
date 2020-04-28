@@ -1,6 +1,7 @@
 markdown: kramdown
 theme: jekyll-theme-modernist
-title: Bad Penguin Service
+title: First Penguin Agency
+description: 技術ブログです。wsl、 Docker、AWS など
 google_analytics:
 author:
   name: turkey136
