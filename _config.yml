@@ -1,8 +1,8 @@
 markdown: kramdown
 theme: jekyll-theme-modernist
 title: 世にも不思議じゃないブログ
-description: Web開発技術がメインのブログです。wsl、Docker、AWS など
-google_analytics:
+description: Web開発技術がメインのブログです。wsl,Docker, AWS など
+google_analytics: UA-165870870-1
 author:
   name: turkey136
   email: isamu.takimoto.136@gmail.com

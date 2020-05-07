@@ -19,6 +19,6 @@ title: Top Page
 # Article
 ### 2020-05
 ### 2020-04
-- [WSL で Ubuntu GUI 環境構築](./blog_md/20200423.html)
-- [WSL で Docker を動かす](./blog_md/20200424.html)
-- [WSL + Docker + App でサーバを立ててホストマシンから繋げる](./blog_md/20200425.html)
+- [WSL で Ubuntu GUI 環境構築](./blog_md/20200423.html) <label class="tag_button">Windows</label><label class="tag_button">WSL</label><label class="tag_button">Ubuntu</label><label class="tag_button">GUI 日本語入力</label>
+- [WSL で Docker を動かす](./blog_md/20200424.html)<label class="tag_button">WSL2</label><label class="tag_button">Docker</label><label class="tag_button">Docker Compose</label>
+- [WSL + Docker + App でサーバを立ててホストマシンから繋げる](./blog_md/20200425.html)<label class="tag_button">Docker Compose</label><label class="tag_button">Jekyll</label>
