@@ -1,7 +1,7 @@
 markdown: kramdown
 theme: jekyll-theme-modernist
-title: First Penguin Agency
-description: 技術ブログです。wsl、 Docker、AWS など
+title: 世にも不思議じゃないブログ
+description: Web開発技術がメインのブログです。wsl、Docker、AWS など
 google_analytics:
 author:
   name: turkey136

@@ -4,7 +4,8 @@ title: Top Page
 ---
 # About
 - This blog
-  - いろいろ調査とかした結果 output するところがないのでひっそりと公開
+  - いろいろ調査とかした結果を output するところがないのでひっそりと公開
+    - Qiita はまぁ、あれだ
   - 技術多めだけどいろいろ書くかもしれません
 - Me
   - 1987年生まれのひよっこフリーランスエンジニア
@@ -16,6 +17,7 @@ title: Top Page
    - email: [isamu.takimoto.136@gmail.com](mailto:isamu.takimoto.136@gmail.com)
 
 # Article
+### 2020-05
 ### 2020-04
 - [WSL で Ubuntu GUI 環境構築](./blog_md/20200423.html)
 - [WSL で Docker を動かす](./blog_md/20200424.html)
