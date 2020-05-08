@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Serverless Framework で マッピング使用するとデプロイ時にエラーになる | 世にも不思議じゃないブログ</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Serverless Framework で マッピング使用するとデプロイ時にエラーになる" />
+<meta name="author" content="turkey136" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Web開発技術がメインのブログです。wsl,Docker, AWS など" />
+<meta property="og:description" content="Web開発技術がメインのブログです。wsl,Docker, AWS など" />
+<link rel="canonical" href="http://0.0.0.0:4000/blog_md/20200507.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/blog_md/20200507.html" />
+<meta property="og:site_name" content="世にも不思議じゃないブログ" />
+<script type="application/ld+json">
+{"url":"http://0.0.0.0:4000/blog_md/20200507.html","author":{"@type":"Person","name":"turkey136"},"description":"Web開発技術がメインのブログです。wsl,Docker, AWS など","headline":"Serverless Framework で マッピング使用するとデプロイ時にエラーになる","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=f023f8916ea32adc5893ba061f592c3f824ebce0">
+    <script src="/assets/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script data-ad-client="ca-pub-2837697831824372" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header >
+        <h1>世にも不思議じゃないブログ</h1>
+        
+          <p>Web開発技術がメインのブログです。wsl,Docker, AWS など</p>
+        
+      </header>
+      <section>
+
+      <h2 id="serverless-framework-で-マッピング使用するとデプロイ時にエラーになる">Serverless Framework で マッピング使用するとデプロイ時にエラーになる</h2>
+
+<h3 id="前提">前提</h3>
+<p>serverless で Lambda を使う場合、発火トリガとして Kinesis や SQS を使ことが多いです。</p>
+
+<p>以下のような構成はよくありそうですね。
+<img src="./img/20200507/20200507_001.png" title="Lambda、SQSを使ったよくある構成" /></p>
+
+<p>この構成を serverless で記載すると以下のようになります。</p>
+
+<p>myQueue にキューが積まれたら lambda-logic がデキューしに行く構成です。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>functions:
+  lambda-logic:
+    handler: handler.compute
+    events:
+      - sqs:
+          arn: arn:aws:sqs:region:XXXXXX:myQueue
+          batchSize: 10
+          maximumRetryAttempts: 2
+</code></pre></div></div>
+
+<p>再試行回数を5に変えよう上記を書き換えてデプロイを行うと以下のようなエラーが出てデプロイが失敗します。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>An error occurred: WhosGotTheFuncEvenSourceMappingSQSABCDUpdateSQSisArn - 
+The event source arn (arn:aws:sqs:region:xxx:stream/Update-Kinesis)  
+and function (MyCloudStack-whos-got-the-func) provided mapping already exists. 
+Please update or delete the existing mapping with UUID xxxx-xxxx-xxxx
+</code></pre></div></div>
+
+<h3 id="暫定対応方法">暫定対応方法</h3>
+
+<p>serverless のバグ[1] のようで以下のいずれかの方法しかありません。（2020-05-07 時点）</p>
+
+<ul>
+  <li>コンソールから該当を削除</li>
+  <li>CLI で該当を削除</li>
+</ul>
+
+<p>今回は SQS について記載しましたが DynamoDB の カラム変更や kinesis の構成変更等も影響がありそうです。</p>
+
+<p>Lambda 自体を変更した場合は発生しないので通常のデプロイには影響がないのが救いです。</p>
+
+<h3 id="参考">参考</h3>
+<p>[1] serverless deploy fails after adding properties to a lambda event stream https://github.com/serverless/serverless/issues/4471</p>
+
+
+      </section>
+    </div>
+    <footer>
+    
+      <p><a href="https://github.com/turkey136/turkey_blog"><strong>GitHub Project</strong></a> maintained by <a href="https://github.com/turkey136">turkey136</a></p>
+    
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-165870870-1', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>
+ 

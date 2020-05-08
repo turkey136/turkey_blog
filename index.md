@@ -18,6 +18,8 @@ title: Top Page
 
 # Article
 ### 2020-05
+- [Serverless Framework で Lambda にマッピングを使用するとデプロイ時にエラーになる](./blog_md/20200507.html)<label class="tag_button">AWS</label><label class="tag_button">Lambda</label><label class="tag_button">serverless</label>
+
 ### 2020-04
 - [WSL で Ubuntu GUI 環境構築](./blog_md/20200423.html) <label class="tag_button">Windows</label><label class="tag_button">WSL</label><label class="tag_button">Ubuntu</label><label class="tag_button">GUI 日本語入力</label>
 - [WSL で Docker を動かす](./blog_md/20200424.html)<label class="tag_button">WSL2</label><label class="tag_button">Docker</label><label class="tag_button">Docker Compose</label>
