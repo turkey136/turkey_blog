@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>株価解析プロジェクト 計画編 | 世にも不思議じゃないブログ</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="株価解析プロジェクト 計画編" />
+<meta name="author" content="turkey136" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Web開発技術がメインのブログです。wsl,Docker, AWS など" />
+<meta property="og:description" content="Web開発技術がメインのブログです。wsl,Docker, AWS など" />
+<link rel="canonical" href="http://0.0.0.0:4000/blog_md/20200514.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/blog_md/20200514.html" />
+<meta property="og:site_name" content="世にも不思議じゃないブログ" />
+<script type="application/ld+json">
+{"url":"http://0.0.0.0:4000/blog_md/20200514.html","author":{"@type":"Person","name":"turkey136"},"description":"Web開発技術がメインのブログです。wsl,Docker, AWS など","headline":"株価解析プロジェクト 計画編","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=2c863165480b2762bf8df7a19c3aecdf32959fc4">
+    <script src="/assets/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script data-ad-client="ca-pub-2837697831824372" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header >
+        <h1>世にも不思議じゃないブログ</h1>
+        
+          <p>Web開発技術がメインのブログです。wsl,Docker, AWS など</p>
+        
+      </header>
+      <section>
+
+      <h2 id="株価解析プロジェクト-計画編">株価解析プロジェクト 計画編</h2>
+
+<h3 id="前提">前提</h3>
+<p>老後 2000 万円問題[1]が出てから株を始めたんですが、コロナの真っ只中でいろいろと胃が痛いこの頃です。</p>
+
+<p>それはともかく、株って予測は難しいのですよね。機械学習で予測する[2]のもありますが、確率された手法もないようで、一喜一憂するしか現状方法がないですね。</p>
+
+<p>なぜ難しいかと専門外の頭で考えた所、「外的要因が多すぎるのでは？」という考えになりました。現代は電子取引なのでポジ／ネガのニュースが流れると、それに連動して即反映されます。</p>
+
+<p>歴史は繰り返すというので過去に似た動きがあれば似た要因で似た動きをするのではという仮定を立ててみました。</p>
+
+<p>Python で作れば学習になって一石二鳥。目指せ不労所得です</p>
+
+<h3 id="仕様">仕様</h3>
+<ul>
+  <li>機能
+    <ul>
+      <li>株コードまたは名前で株を検索できる</li>
+      <li>最新の株の動きを過去データと比較して似た動きをした期間を抽出できる
+        <ul>
+          <li>増減率（少数切り捨て）、増減の2パターンで表示できる</li>
+        </ul>
+      </li>
+      <li>最新の株価をグラフ表示できる</li>
+      <li>過去に見た株を最新5件記録できる</li>
+    </ul>
+  </li>
+  <li>画面
+    <ul>
+      <li><img src="./img/20200514/20200514_001.png" title="Top 画面" />
+        <ul>
+          <li><img src="./img/20200514/20200514_003.png" title="株検索結果画面" /></li>
+        </ul>
+      </li>
+      <li><img src="./img/20200514/20200514_002.png" title="株価抽出画面" /></li>
+    </ul>
+  </li>
+  <li>ソフトウェア類
+    <ul>
+      <li>Python</li>
+      <li>mariadb</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="参考">参考</h3>
+<ul>
+  <li>[1] 「老後2000万円」は余裕の原資　年金の誤解を解く https://style.nikkei.com/article/DGXMZO46637970X20C19A6000000/</li>
+  <li>[2] 【前編】ディープラーニングで株価予想！【Python】 https://rightcode.co.jp/blog/information-technology/python-deep-learning-stock-price-forecast-create#i-2</li>
+</ul>
+
+
+      </section>
+    </div>
+    <footer>
+    
+      <p><a href="https://github.com/turkey136/turkey_blog"><strong>GitHub Project</strong></a> maintained by <a href="https://github.com/turkey136">turkey136</a></p>
+    
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-165870870-1', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>
+ 
