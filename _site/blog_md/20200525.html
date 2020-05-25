@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>株価解析プロジェクト データ準備前編 | 世にも不思議じゃないブログ</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="株価解析プロジェクト データ準備前編" />
+<meta name="author" content="turkey136" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Web開発技術がメインのブログです。wsl,Docker, AWS など" />
+<meta property="og:description" content="Web開発技術がメインのブログです。wsl,Docker, AWS など" />
+<link rel="canonical" href="http://0.0.0.0:4000/blog_md/20200525.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/blog_md/20200525.html" />
+<meta property="og:site_name" content="世にも不思議じゃないブログ" />
+<script type="application/ld+json">
+{"url":"http://0.0.0.0:4000/blog_md/20200525.html","author":{"@type":"Person","name":"turkey136"},"description":"Web開発技術がメインのブログです。wsl,Docker, AWS など","headline":"株価解析プロジェクト データ準備前編","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=f142d7df2395060e561da6a8d3efb20fbfd8b829">
+    <script src="/assets/js/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script data-ad-client="ca-pub-2837697831824372" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header >
+        <h1>世にも不思議じゃないブログ</h1>
+        
+          <p>Web開発技術がメインのブログです。wsl,Docker, AWS など</p>
+        
+      </header>
+      <section>
+
+      <h2 id="株価解析プロジェクト-データ準備前編">株価解析プロジェクト データ準備前編</h2>
+
+<h3 id="目標">目標</h3>
+<p>マスターデータを取得する
+DB を構築する</p>
+
+<h3 id="仕様">仕様</h3>
+<ul>
+  <li>【データ構造】市場マスタ</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>name</th>
+      <th>type</th>
+      <th>etc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>int</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>string</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>【データ構造】 株券マスタ</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>name</th>
+      <th>type</th>
+      <th>etc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>int</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>market_id</td>
+      <td>int</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>industry_type_id ｜ int</td>
+      <td>33事業区分ID 省略</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>sub_industry_type_id</td>
+      <td>int</td>
+      <td>17事業区分マスタID 記載省略</td>
+    </tr>
+    <tr>
+      <td>code</td>
+      <td>string</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>string</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>【データ構造】 株価データ</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>name</th>
+      <th>type</th>
+      <th>etc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>code</td>
+      <td>string</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>date</td>
+      <td>date</td>
+      <td>yyyy-mm-dd</td>
+    </tr>
+    <tr>
+      <td>start</td>
+      <td>int</td>
+      <td>開始額</td>
+    </tr>
+    <tr>
+      <td>hight</td>
+      <td>int</td>
+      <td>最高値</td>
+    </tr>
+    <tr>
+      <td>low</td>
+      <td>int</td>
+      <td>最安値</td>
+    </tr>
+    <tr>
+      <td>close</td>
+      <td>int</td>
+      <td>終値</td>
+    </tr>
+    <tr>
+      <td>vary_code</td>
+      <td>int</td>
+      <td>判定用コード<br />-1: 前日より減<br />0：前日と同じ  <br />1：前日より増</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="データ取得元">データ取得元</h3>
+<p>さて、データ構造は決まりましたが、どこからデータを取ってきましょう？</p>
+
+<p>日本株をメインにするので東証[1]でいいでしょう。</p>
+
+<p>問題は毎日の株情報です。いろいろ探してみると同じこと[2]を考えている人はいますね。パク。。。参考にしましょう</p>
+
+<p>複雑じゃないので ActiveRecored のようなものは使わずに自前で全部管理します。</p>
+
+<p>ひとまずこんなファイル構成にするつもりです。フロントエンドは別に考える</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>src/
+┠ db/ DB関係のソース
+┠ app/ API関係のソース
+┗ script/ バッチ関係のソース
+</code></pre></div></div>
+
+<p>で、できたものが<a href="https://github.com/turkey136/investment_graph/compare/70ea035ae19641ab2b99cb5f6a5238a0b512d3da...3ca5160b393a81ead515c85a37dc550310dccf44">こちら</a>。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd src
+python db/migrate.py
+python db/seed_master.py
+python db/insert_stock_price.py
+</code></pre></div></div>
+
+<p>当たり前ですが、異常アクセス対策で連続して送信すると timeout で怒られるので注意です</p>
+
+<p>次回はいったんAPIを実装</p>
+
+<h3 id="参考">参考</h3>
+<ul>
+  <li>[1] その他統計資料 東証上場銘柄一覧 https://www.jpx.co.jp/markets/statistics-equities/misc/01.html</li>
+  <li>[2] 最新の日本株価を 無料かつ高速で取得する 【Python】
+https://note.com/tkmngn/n/nf5a0d548b909</li>
+</ul>
+
+
+      </section>
+    </div>
+    <footer>
+    
+      <p><a href="https://github.com/turkey136/turkey_blog"><strong>GitHub Project</strong></a> maintained by <a href="https://github.com/turkey136">turkey136</a></p>
+    
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-165870870-1', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>
+ 

@@ -18,6 +18,7 @@ title: Top Page
 
 # Article
 ### 2020-05
+- [株価解析プロジェクト データ準備前編](./blog_md/20200525.html)<label class="tag_button">Python</label><label class="tag_button">pandas-datareader</label><label class="tag_button">日本株</label>
 - [株価解析プロジェクト 計画編](./blog_md/20200514.html)<label class="tag_button">Python</label><label class="tag_button">株</label>
 - [Serverless Framework で Lambda にマッピングを使用するとデプロイ時にエラーになる](./blog_md/20200507.html)<label class="tag_button">AWS</label><label class="tag_button">Lambda</label><label class="tag_button">serverless</label>
 
